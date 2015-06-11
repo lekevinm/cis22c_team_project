@@ -1,3 +1,18 @@
+/*
+  include more than one graph (storing each graph in a separate file), with 7 to 25 vertices in one graph
+  your team project MUST:
+ o include a loop to allow solving the problem more than once in
+ one run
+ o display a menu to the user for the following options:
+  read the graph from a text file where the file name is input from the user (use the openInputFile function)
+  add an edge to the graph
+  remove an edge from the graph
+  undo the previous removal(s) (you MUST use an ArrayStack or LinkedStack from HW#1)
+  display the graph on the screen (give the choices of Depth- First traversal or Breadth-First traversal)
+  solve the problem for the graph, which would automatically display the results on the screen (NOTE: THERE MAY NOT BE A SOLUTION FOR A GIVEN GRAPH), and ask the user if the results should be saved to a text file (where the file name is input from the user)
+  write the graph to a text file using the Breadth-First traversal, where the file name is input from the user
+ */
+
 #include <iostream>
 #include <string>
 #include <fstream>
