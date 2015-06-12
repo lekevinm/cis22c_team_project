@@ -1,5 +1,8 @@
 /*
+ TO DO
   include more than one graph (storing each graph in a separate file), with 7 to 25 vertices in one graph
+    - write out these graphs in a file beforehand
+    - include code that can write changes to these graphs
   your team project MUST:
  o include a loop to allow solving the problem more than once in
  one run
@@ -11,6 +14,10 @@
   display the graph on the screen (give the choices of Depth- First traversal or Breadth-First traversal)
   solve the problem for the graph, which would automatically display the results on the screen (NOTE: THERE MAY NOT BE A SOLUTION FOR A GIVEN GRAPH), and ask the user if the results should be saved to a text file (where the file name is input from the user)
   write the graph to a text file using the Breadth-First traversal, where the file name is input from the user
+ 
+ 1. Map coloring: represent adjacent geographic areas using a graph, and determine if you could color a map using a particular number of colors, OR find the minimum number of colors needed
+ 
+ United States regions (west coast and east coast), two maps
  */
 
 #include <iostream>

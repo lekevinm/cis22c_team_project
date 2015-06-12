@@ -10,6 +10,7 @@
 #define _VERTEX
 
 #include "Edge.h"
+#include <string>
 
 // The following ADT choices can vary according to how you want
 // to implement the adjacency list, and they can be different from
@@ -39,6 +40,9 @@ public:
 
    /** @return  The label of this vertex. */
    LabelType getLabel() const;
+    
+    /** ADDED: the color of this vertex. */
+    int color; // it will be integer here, and it will turn to a color at a switch menu in main
 
    /** Marks this vertex as visited. */
    void visit();

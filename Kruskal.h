@@ -27,7 +27,6 @@ class Kruskal: public LinkedGraph<LabelType>
 		LabelType startLabel;
 		Edge<LabelType> edge;
 		bool checked;
-
 	public:
 		KruskalEdge(){}
 		KruskalEdge(LabelType start, Edge<LabelType> ed){
