@@ -15,91 +15,144 @@ template <class LabelType>
 class ColorGraph: public LinkedGraph<LabelType>
 {
 private:
-    LinkedStack<Edge> removal_stack; // the linked stack that keeps track of removals (for undoing)
+    LinkedStack<Vertex> removal_stack; // the linked stack that keeps track of removals (for undoing)
     int color_count = 1; // the number of colors to try to solve the color map problem
 public:
-    ColorGraph(){}
+    ColorGraph(){} // not sure what is needed here during construction
     ~ColorGraph(){}
-    bool greedyColor();
+    //bool greedyColor(); // after looking at it closely I don't think this algorithm provides a good answer for the probelm
+    bool isSafe(/*vertex*/, int c);
+    bool colorCheck(/*vertex*/);
+    bool graphColoring(); // backtracking algorithm answers problem better
+    bool remove(LabelType start, LabelType end);
     bool undoRemove();
     void printColorMap();
-    void setNumColor(int numColor);
+    void setNumColor(int c){color_count = c;}
+    int getNumColor(){return color_count;}
 };
 
+/* A utility function to check if the current color assignment
+ is safe for vertex v */
 template <class LabelType>
-bool ColorGraph<LabelType>::greedyColor();
+bool ColorGraph<LabelType>::isSafe(/*vertex*/, int c)
 {
-
+    for (int i = 0; i < this->numberOfVertices; i++){
+      //  if (/*vertex*/ && c == color[i]) // color[i] is not used in this program,
+        // possibly change to check if the same color is used for any adjacent vertices
+            return false;
+    }
+    return true;
+}
+                 
+/* A recursive utility function to solve m coloring problem */
+template <class LabelType>
+bool ColorGraph<LabelType>::colorCheck(/*vertex*/)
+{
+        /* base case: If all vertices are assigned a color then
+         return true */
+       // if (/*vertex*/ == this->numberOfVertices) // not sure what this checks exactly, possibly change to check if no vertex has a color of 0
+            return true;
+        
+        /* Consider this vertex v and try different colors */
+        for (int c = 1; c <= color_count; c++)
+        {
+            /* Check if assignment of color c to v is fine*/
+            if (isSafe(/*vertex*/, c))
+            {
+               // color[/*vertex*/] = c;
+                /*vertex*/.setColor(c);
+                
+                /* recur to assign colors to rest of the vertices */
+                if (colorCheck (/*next vertex*/) == true)
+                    return true;
+                
+                /* If assigning color c doesn't lead to a solution
+                 then remove it */
+               // color[/*vertex*/] = 0;
+                /*vertex*/.setColor(0);
+            }
+        }
+        
+        /* If no color can be assigned to this vertex then return false */
+        return false;
+}
+                 
+/* This function solves the m Coloring problem using Backtracking.
+It mainly uses graphColoringUtil() to solve the problem. It returns
+false if the m colors cannot be assigned, otherwise return true and
+prints assignments of colors to all vertices. Please note that there
+may be more than one solutions, this function prints one of the
+feasible solutions.*/
+template <class LabelType>
+bool ColorGraph<LabelType>::graphColoring()
+{
+        // Initialize all color values as 0. This initialization is needed
+        // correct functioning of isSafe()
+      /*  int *color = new int[this->numberOfVertices];
+        for (int i = 0; i < this->numberOfVertices; i++)
+            color[i] = 0;*/
+    
+    // change this so that each vertex in the map gets a color of 0 initially
+    
+        // Call graphColoringUtil() for vertex 0
+        if (colorCheck(/*first vertex*/) == false)
+        {
+            cout << "Problem cannot be solved.\n";
+            return false;
+        }
+        return true;
 }
 
-/* Greedy Coloring Algorithm --> port over to our code
- // Assigns colors (starting from 0) to all vertices and prints
- // the assignment of colors
- void Graph::greedyColoring()
- {
- int result[V];
- 
- // Assign the first color to first vertex
- result[0]  = 0;
- 
- // Initialize remaining V-1 vertices as unassigned
- for (int u = 1; u < V; u++)
- result[u] = -1;  // no color is assigned to u
- 
- // A temporary array to store the available colors. True
- // value of available[cr] would mean that the color cr is
- // assigned to one of its adjacent vertices
- bool available[V];
- for (int cr = 0; cr < V; cr++)
- available[cr] = false;
- 
- // Assign colors to remaining V-1 vertices
- for (int u = 1; u < V; u++)
- {
- // Process all adjacent vertices and flag their colors
- // as unavailable
- list<int>::iterator i;
- for (i = adj[u].begin(); i != adj[u].end(); ++i)
- if (result[*i] != -1)
- available[result[*i]] = true;
- 
- // Find the first available color
- int cr;
- for (cr = 0; cr < V; cr++)
- if (available[cr] == false)
- break;
- 
- result[u] = cr; // Assign the found color
- 
- // Reset the values back to false for the next iteration
- for (i = adj[u].begin(); i != adj[u].end(); ++i)
- if (result[*i] != -1)
- available[result[*i]] = false;
- }
- 
- // print the result
- for (int u = 0; u < V; u++)
- cout << "Vertex " << u << " --->  Color "
- << result[u] << endl;
- }
- */
- 
+template<class LabelType> // TO DO: modify it so that the removed vertex is added to the removal stack
+bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
+{
+    bool successful = false;
+    Vertex<LabelType>* startVertex = vertices.getItem(start);
+    Vertex<LabelType>* endVertex   = vertices.getItem(end);
+    successful = startVertex->disconnect(end);
+    if (successful)
+    {
+        successful = endVertex->disconnect(start);
+        if (successful)
+        {
+            numberOfEdges--;
+            
+            removal_stack.push(endVertex); // adds the vertices to the stack, but not sure if both are needed
+            removal_stack.push(startVertex);
+            
+            // If either vertex no longer has a neighbor, remove it
+            if (startVertex->getNumberOfNeighbors() == 0)
+                vertices.remove(start);
+            if (endVertex->getNumberOfNeighbors() == 0)
+                vertices.remove(end);
+        }
+        else
+            successful = false; // Failed disconnect from endVertex
+    }
+    else
+        successful = false;    // Failed disconnect from startVertex
+    
+    return successful;
+}  // end remove
 
 template <class LabelType>
 bool ColorGraph<LabelType>::undoRemove();
 {
-
+    if (!removal_stack.isEmpty()){
+    Vertex<LabelType>* startVertex = removal_stack.pop();
+    Vertex<LabelType>* endVertex = removal_stack.pop();
+    
+    this->add(startvertex, endVertex);
+        return true;
+    }
+    else
+        return false;
 }
 
 template <class LabelType>
 void ColorGraph<LabelType>::printColorMap()
 {
-
+    /* use iterator here? */
 }
 
-template <class LabelType>
-void ColorGraph<LabelType>::setNumColor(int numColor)
-{
-    color_count = numColor;
-}
 #endif

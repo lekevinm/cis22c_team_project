@@ -31,6 +31,9 @@ private:
 
    // Helper method for finding a specific neighbor
    int getNeighborPosition(const LabelType& neighborVertex) const;
+    
+    /** ADDED: the color of this vertex. */
+    int color; // it will be integer here, and it will turn to a color at a switch menu in main
 
 public:
    /** Creates an unvisited vertex, gives it a label, and clears its
@@ -41,8 +44,10 @@ public:
    /** @return  The label of this vertex. */
    LabelType getLabel() const;
     
-    /** ADDED: the color of this vertex. */
-    int color; // it will be integer here, and it will turn to a color at a switch menu in main
+    /** ADDED: returns the color of this vertex. */
+    int getColor() {return color;} // it will be integer here, and it will turn to a color at a switch menu in main
+    
+    void setColor(int c) {color = c;} // set the color, to be used in ColorGraph.h
 
    /** Marks this vertex as visited. */
    void visit();
