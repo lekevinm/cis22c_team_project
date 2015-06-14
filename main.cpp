@@ -1,7 +1,7 @@
 /*
  TO DO
   include more than one graph (storing each graph in a separate file), with 7 to 25 vertices in one graph
-    - write out these graphs in a file beforehand
+    - write out these graphs in two files beforehand
     - include code that can write changes to these graphs
  
   your team project MUST:

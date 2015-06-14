@@ -103,12 +103,13 @@ bool ColorGraph<LabelType>::graphColoring()
         return true;
 }
 
-template<class LabelType> // TO DO: modify it so that the removed vertex is added to the removal stack
+template<class LabelType>
 bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
 {
     bool successful = false;
     Vertex<LabelType>* startVertex = vertices.getItem(start);
     Vertex<LabelType>* endVertex   = vertices.getItem(end);
+    
     successful = startVertex->disconnect(end);
     if (successful)
     {
@@ -122,9 +123,18 @@ bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
             
             // If either vertex no longer has a neighbor, remove it
             if (startVertex->getNumberOfNeighbors() == 0)
+            {
                 vertices.remove(start);
+                --numberOfVertices; // UPDATED 06/11/2015
+                delete startVertex; // UPDATED 06/08/2015
+            }
+            
             if (endVertex->getNumberOfNeighbors() == 0)
+            {
                 vertices.remove(end);
+                --numberOfVertices; // UPDATED 06/11/2015
+                delete endVertex;  // UPDATED 06/08/2015
+            }
         }
         else
             successful = false; // Failed disconnect from endVertex
