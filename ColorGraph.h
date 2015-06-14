@@ -16,7 +16,7 @@ class ColorGraph: public LinkedGraph<LabelType>
 {
 private:
     LinkedStack<Vertex> removal_stack; // the linked stack that keeps track of removals (for undoing)
-    int color_count = 1; // the number of colors to try to solve the color map problem
+    int color_count = 1; // the number of colors to try to solve the color map problem (WILL BE UPDATED LATER)
 public:
     ColorGraph(){} // not sure what is needed here during construction
     ~ColorGraph(){}

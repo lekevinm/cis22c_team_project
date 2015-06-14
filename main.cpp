@@ -35,6 +35,7 @@ bool openInputFile(ifstream &ifs);
 
 int main()
 {
+    /* TO DO : make a preliminary switch menu, and then work from there */
     return 0;
 }
 
