@@ -118,8 +118,8 @@ bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
         {
             this->numberOfEdges--;
             
-            removal_stack.push(endVertex); // adds the vertices to the stack, but not sure if both are needed
-            removal_stack.push(startVertex);
+            removal_stack.push(*endVertex); // adds the vertices to the stack, but not sure if both are needed
+            removal_stack.push(*startVertex);
             
             // If either vertex no longer has a neighbor, remove it
             if (startVertex->getNumberOfNeighbors() == 0)
