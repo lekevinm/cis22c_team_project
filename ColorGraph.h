@@ -15,7 +15,7 @@ template <class LabelType>
 class ColorGraph: public LinkedGraph<LabelType>
 {
 private:
-    LinkedStack<Vertex<LabelType>> removal_stack; // the linked stack that keeps track of removals (for undoing)
+    LinkedStack<LabelType> removal_stack; // the linked stack that keeps track of removals (for undoing)
     int color_count = 1; // the number of colors to try to solve the color map problem (WILL BE UPDATED LATER)
     bool isSafe(/*vertex*/, int c);
     bool colorCheck(/*vertex*/);
@@ -110,6 +110,7 @@ bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
     Vertex<LabelType>* startVertex = this->vertices.getItem(start);
     Vertex<LabelType>* endVertex   = this->vertices.getItem(end);
     
+    
     successful = startVertex->disconnect(end);
     if (successful)
     {
@@ -117,10 +118,8 @@ bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
         if (successful)
         {
             this->numberOfEdges--;
-            
-            removal_stack.push(*endVertex); // adds the vertices to the stack, but not sure if both are needed
-            removal_stack.push(*startVertex);
-            
+            removal_stack.push(start);
+            removal_stack.push(end);
             // If either vertex no longer has a neighbor, remove it
             if (startVertex->getNumberOfNeighbors() == 0)
             {
@@ -146,13 +145,14 @@ bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
 }  // end remove
 
 template <class LabelType>
-bool ColorGraph<LabelType>::undoRemove();
+bool ColorGraph<LabelType>::undoRemove()
 {
     if (!removal_stack.isEmpty()){
-    Vertex<LabelType>* startVertex = removal_stack.pop();
-    Vertex<LabelType>* endVertex = removal_stack.pop();
-    
-    this->add(startvertex, endVertex);
+    LabelType start = removal_stack.peek();
+        removal_stack.pop();
+    LabelType end = removal_stack.peek();
+        removal_stack.pop();
+    this->add(start, end);
         return true;
     }
     else
@@ -162,7 +162,7 @@ bool ColorGraph<LabelType>::undoRemove();
 /*template <class LabelType>
 void ColorGraph<LabelType>::printColorMap()
 {
-    /* use iterator here?
+     use iterator here?
 }*/
 
 #endif
