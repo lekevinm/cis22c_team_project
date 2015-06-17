@@ -26,7 +26,8 @@
  LinkedGraph function that saves graph to file
  completion of ColorGraph.h (learn how traversal works, how to step through each vertex, etc)
  testing of program
- bug fixes
+ clean up text files
+ bug fixes + efficiency cleanup
  */
 
 #include <iostream>
@@ -44,7 +45,7 @@ bool add(LinkedGraph<string>* cg_object);
 bool remove(LinkedGraph<string>* cg_object);
 bool undo(LinkedGraph<string>* cg_object);
 void display(LinkedGraph<string>* cg_object, string root);
-void displayVertex(Vertex<string> &vertex);
+void displayVertex(string &vertex);
 bool solve(LinkedGraph<string>* cg_object, string root);
 bool save(LinkedGraph<string>* cg_object);
 
@@ -215,11 +216,17 @@ void display(LinkedGraph<string>* cg_object, string root){
 }
 
 // Function that displays the state and color at each vertex.
-void displayVertex(Vertex<string> &vertex)
+void displayVertex(string &vertex)
 {
    // cout << hex << left << setw(10) << ptrIp->getDottedDecimal() << right << setw(10) << " " << ptrIp->getIpValue() << endl;
-    cout << left << setw(10) << vertex.getLabel() << right << setw(10) << " " << vertex.getColor() << endl; // not sure if we should change int to an actual color...
+   // cout << left << setw(10) << vertex.getLabel() << right << setw(10) << " " << vertex.getColor() << endl; // not sure if we should change int to an actual color...
+     cout << "Displaying item - " << vertex << endl; // figure out how to display both state AND color !!!
 }
+
+/*void display(string& anItem)
+{
+    cout << "Displaying item - " << anItem << endl;
+}*/
 
 // A function to solve the map coloring problem for the current graph
 bool solve(LinkedGraph<string>* cg_object, string root){
@@ -244,10 +251,9 @@ bool solve(LinkedGraph<string>* cg_object, string root){
             }
         } while (save_option != 1 && save_option != 2);
     }
-    else {
+    else
         cout << "Problem could not be solved.\n";
         return false;
-    }
 }
 
 // A function to save the graph to a text file of user choice
