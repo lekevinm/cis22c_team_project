@@ -1,0 +1,7 @@
+California Arizona,Nevada,Oregon
+Nevada Arizona,California,Idaho,Oregon,Utah
+Oregon California,Idaho,Nevada,Washington
+Washington Idaho,Oregon
+Idaho Nevada,Oregon,Utah,Washington
+Utah Arizona,Idaho,Nevada
+Arizona California,Nevada,Utah

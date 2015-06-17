@@ -61,6 +61,13 @@ public:
     //---> YOU DECLARE HERE (AND WRITE BELOW) THE MEMBER FUNCTION TO
     //         WRITE THE GRAPH TO A TEXT FILE (SUGGEST TO PASS AN
     //        ofstream TO THIS !
+    void saveToFile(ostream &os);
+    
+   virtual bool graphColoring(); // backtracking algorithm answers problem better
+   virtual bool undoRemove();
+   virtual void printColorMap();
+   virtual void setNumColor(int c);
+   virtual int getNumColor();
     
     
 }; // end GraphInterface
@@ -277,4 +284,10 @@ findOrCreateVertex(const LabelType& vertexLabel)
 // WRITE THE MEMBER FUNCTION HERE TO
 //         WRITE THE GRAPH TO A TEXT FILE (SUGGEST TO PASS AN
 //        ofstream TO THIS !
+
+template <class LabelType>
+void LinkedGraph<LabelType>::saveToFile(ostream &os)
+{
+    /*need to use BFS/DFS or DAC iterator here probably*/
+}
 #endif

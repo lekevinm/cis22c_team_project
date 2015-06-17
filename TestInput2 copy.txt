@@ -1,0 +1,7 @@
+Florida Alabama,Georgia
+Georgia Tenessee,Alabama
+Alabama Tenessee,Georgia,Mississippi
+Mississippi Alabama,Arkansas,Louisiana,Tenessee
+Arkansas Louisiana,Mississippi,Tenessee
+Louisiana Arkansas,Mississippi
+Tenessee Arkansas,Mississippi,Alabama,Georgia

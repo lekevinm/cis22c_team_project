@@ -15,20 +15,20 @@ template <class LabelType>
 class ColorGraph: public LinkedGraph<LabelType>
 {
 private:
-    LinkedStack<Vertex> removal_stack; // the linked stack that keeps track of removals (for undoing)
+    LinkedStack<Vertex<LabelType>> removal_stack; // the linked stack that keeps track of removals (for undoing)
     int color_count = 1; // the number of colors to try to solve the color map problem (WILL BE UPDATED LATER)
-public:
-    ColorGraph(){} // not sure what is needed here during construction
-    ~ColorGraph(){}
-    //bool greedyColor(); // after looking at it closely I don't think this algorithm provides a good answer for the probelm
     bool isSafe(/*vertex*/, int c);
     bool colorCheck(/*vertex*/);
+public:
+    ColorGraph(){} // not sure what is needed here during construction
+ //   ~ColorGraph(){}
     bool graphColoring(); // backtracking algorithm answers problem better
+  //  bool add(LabelType start, LabelType end, int edgeWeight = 0);
     bool remove(LabelType start, LabelType end);
     bool undoRemove();
-    void printColorMap();
-    void setNumColor(int c){color_count = c;}
-    int getNumColor(){return color_count;}
+  //  void printColorMap();
+  //  void setNumColor(int c){color_count = c;}
+  //  int getNumColor(){return color_count;}
 };
 
 /* A utility function to check if the current color assignment
@@ -107,8 +107,8 @@ template<class LabelType>
 bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
 {
     bool successful = false;
-    Vertex<LabelType>* startVertex = vertices.getItem(start);
-    Vertex<LabelType>* endVertex   = vertices.getItem(end);
+    Vertex<LabelType>* startVertex = this->vertices.getItem(start);
+    Vertex<LabelType>* endVertex   = this->vertices.getItem(end);
     
     successful = startVertex->disconnect(end);
     if (successful)
@@ -116,7 +116,7 @@ bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
         successful = endVertex->disconnect(start);
         if (successful)
         {
-            numberOfEdges--;
+            this->numberOfEdges--;
             
             removal_stack.push(endVertex); // adds the vertices to the stack, but not sure if both are needed
             removal_stack.push(startVertex);
@@ -124,15 +124,15 @@ bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)
             // If either vertex no longer has a neighbor, remove it
             if (startVertex->getNumberOfNeighbors() == 0)
             {
-                vertices.remove(start);
-                --numberOfVertices; // UPDATED 06/11/2015
+                this->vertices.remove(start);
+                --this->numberOfVertices; // UPDATED 06/11/2015
                 delete startVertex; // UPDATED 06/08/2015
             }
             
             if (endVertex->getNumberOfNeighbors() == 0)
             {
-                vertices.remove(end);
-                --numberOfVertices; // UPDATED 06/11/2015
+                this->vertices.remove(end);
+                --this->numberOfVertices; // UPDATED 06/11/2015
                 delete endVertex;  // UPDATED 06/08/2015
             }
         }
@@ -159,10 +159,10 @@ bool ColorGraph<LabelType>::undoRemove();
         return false;
 }
 
-template <class LabelType>
+/*template <class LabelType>
 void ColorGraph<LabelType>::printColorMap()
 {
-    /* use iterator here? */
-}
+    /* use iterator here?
+}*/
 
 #endif
