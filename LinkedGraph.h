@@ -63,11 +63,11 @@ public:
     //        ofstream TO THIS !
     void saveToFile(ostream &os);
     
-   virtual bool graphColoring(); // backtracking algorithm answers problem better
-   virtual bool undoRemove();
-   virtual void printColorMap();
-   virtual void setNumColor(int c);
-   virtual int getNumColor();
+    virtual bool graphColoring(); // backtracking algorithm answers problem better
+    virtual bool undoRemove();
+    virtual void printColorMap();
+    virtual void setNumColor(int c);
+    virtual int getNumColor();
     
     
 }; // end GraphInterface
@@ -174,7 +174,7 @@ void LinkedGraph<LabelType>::unvisitVertices()
     while (pvertexIterator->hasNext())
     {
         Vertex<LabelType>* loopVertex = pvertexIterator->next();
-		loopVertex->setColor(0);
+        loopVertex->setColor(0);
         loopVertex->unvisit();
     }  // end while
 } // endunvisitVertices

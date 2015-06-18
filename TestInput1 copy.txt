@@ -5,3 +5,16 @@ Washington Idaho,Oregon
 Idaho Nevada,Oregon,Utah,Washington
 Utah Arizona,Idaho,Nevada
 Arizona California,Nevada,Utah
+
+California Oregon
+California Nevada
+California Arizona
+Oregon Washington
+Oregon Idaho
+Oregon Nevada
+Washington Idaho
+Idaho Utah
+Idaho Nevada
+Nevada Arizona
+Nevada Utah
+Utah Arizona
