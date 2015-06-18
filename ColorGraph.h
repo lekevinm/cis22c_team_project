@@ -16,9 +16,10 @@ class ColorGraph: public LinkedGraph<LabelType>
 {
 private:
     LinkedStack<LabelType> removal_stack; // the linked stack that keeps track of removals (for undoing)
-    int color_count = 1; // the number of colors to try to solve the color map problem (WILL BE UPDATED LATER)
-    bool isSafe(/*vertex*/, int c);
-    bool colorCheck(/*vertex*/);
+    vector<Edge<LabelType>> colorGraph;
+    int color_count = 4; // the number of colors to try to solve the color map problem (WILL BE UPDATED LATER)
+    bool isSafe(Vertex<LabelType> currVertex, int c);
+    bool colorCheck(Vertex<LabelType> currVertex, int i);
 public:
     ColorGraph(){} // not sure what is needed here during construction
  //   ~ColorGraph(){}
@@ -34,7 +35,7 @@ public:
 /* A utility function to check if the current color assignment
  is safe for vertex v */
 template <class LabelType>
-bool ColorGraph<LabelType>::isSafe(/*vertex*/, int c)
+bool ColorGraph<LabelType>::isSafe(Vertex<LabelType> currVertex, int c)
 {
     for (int i = 0; i < this->numberOfVertices; i++){
       //  if (/*vertex*/ && c == color[i]) // color[i] is not used in this program,
@@ -46,30 +47,32 @@ bool ColorGraph<LabelType>::isSafe(/*vertex*/, int c)
                  
 /* A recursive utility function to solve m coloring problem */
 template <class LabelType>
-bool ColorGraph<LabelType>::colorCheck(/*vertex*/)
+bool ColorGraph<LabelType>::colorCheck(Vertex<LabelType> currVertex, int i)
 {
         /* base case: If all vertices are assigned a color then
          return true */
-       // if (/*vertex*/ == this->numberOfVertices) // not sure what this checks exactly, possibly change to check if no vertex has a color of 0
+       // if (currVertex == this->numberOfVertices) // not sure what this checks exactly, possibly change to check if no vertex has a color of 0
             return true;
         
         /* Consider this vertex v and try different colors */
         for (int c = 1; c <= color_count; c++)
         {
             /* Check if assignment of color c to v is fine*/
-            if (isSafe(/*vertex*/, c))
+            if (isSafe(currVertex, c))
             {
                // color[/*vertex*/] = c;
-                /*vertex*/.setColor(c);
+                currVertex.setColor(c);
                 
                 /* recur to assign colors to rest of the vertices */
-                if (colorCheck (/*next vertex*/) == true)
+                if ((i+1) < colorGraph.size()){ // make sure it doesn't go past the amount of vertices
+                if (colorCheck (colorGraph[i+1], (i+1)) == true)
                     return true;
+                }
                 
                 /* If assigning color c doesn't lead to a solution
                  then remove it */
                // color[/*vertex*/] = 0;
-                /*vertex*/.setColor(0);
+                currVertex.setColor(0);
             }
         }
         
@@ -86,22 +89,68 @@ feasible solutions.*/
 template <class LabelType>
 bool ColorGraph<LabelType>::graphColoring()
 {
+    this->unvisitVertices(); // reset this graph
+    while (*this->pvertexIterator.hasNext()){
+        colorGraph.push(*this->pvertexIterator->next());
+    }
         // Initialize all color values as 0. This initialization is needed
         // correct functioning of isSafe()
       /*  int *color = new int[this->numberOfVertices];
         for (int i = 0; i < this->numberOfVertices; i++)
             color[i] = 0;*/
+    for (int i = 0; i < colorGraph.size(); i++){
+        colorGraph[i].setColor(0);
+    }
     
+    // ***** iterate through vector to apply intial color to each vertex
+    
+//  Vertex<LabelType> currVertex = *this->pvertexIterator->next();
     // change this so that each vertex in the map gets a color of 0 initially
     
+    // **** use a for loop to color check each vertex
+    
         // Call graphColoringUtil() for vertex 0
-        if (colorCheck(/*first vertex*/) == false)
+        if (colorCheck(colorGraph[0], 0) == false)
         {
             cout << "Problem cannot be solved.\n";
             return false;
         }
         return true;
 }
+
+/*
+ template <class LabelType>
+ void Kruskal<LabelType>::applyKruskal()
+ {
+	if (minSpanTree.size() > 0)
+	{
+ minSpanTree.clear();
+	}
+	unvisitVertices(); // reset this graph
+	int numEdges = orderedEdges.size();
+	int edgeCount = 0;
+	for (int i = 0; i < numEdges && edgeCount < numberOfVertices-1; ++i)
+	{
+ for (int i = 0; i < minSpanTree.size(); ++i){ // reset for each edge
+ minSpanTree[i].setChecked(false);
+ }
+ 
+ KruskalEdge<LabelType> *currEdge = &orderedEdges[i];
+ LabelType start = currEdge->getStart(); // get name of start of edge
+ LabelType end = currEdge->getEnd(); // get name of end of edge
+ Vertex<LabelType>* startVertex = 0, *endVertex=0;
+ 
+ startVertex = vertices.getItem(start); // get start Vertex from graph
+ endVertex = vertices.getItem(end); // get end Vertex from graph
+ if ( REMOVED )
+{
+    // NOT SHOWN
+    
+}
+
+}
+}
+*/
 
 template<class LabelType>
 bool ColorGraph<LabelType>::remove(LabelType start, LabelType end)

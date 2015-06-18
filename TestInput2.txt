@@ -1,15 +1,10 @@
-Florida Alabama,Georgia
-Georgia Tenessee,Alabama
-Alabama Tenessee,Georgia,Mississippi
-Mississippi Alabama,Arkansas,Louisiana,Tenessee
-Arkansas Louisiana,Mississippi,Tenessee
-Louisiana Arkansas,Mississippi
-Tenessee Arkansas,Mississippi,Alabama,Georgia
-
-Florida
-Alabama
-Georgia
-Tenessa
-Mississippi
-Arkansas
-Louisiana
+Florida Georgia
+Florida Alabama
+Georgia Alabama
+Georgia Tennessee
+Alabama Tennessee
+Alabama Mississippi
+Tennessee Mississippi
+Arkansas Mississippi
+Arkanas Louisiana
+Louisiana Mississippi

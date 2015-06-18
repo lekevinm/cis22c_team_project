@@ -26,8 +26,13 @@
  LinkedGraph function that saves graph to file
  completion of ColorGraph.h (learn how traversal works, how to step through each vertex, etc)
  testing of program
- clean up text files
+  // clean up text files
  bug fixes + efficiency cleanup
+ 
+ EXTRA ADDITIONS
+ ==========
+ give a list of states to add an edge to
+ input validation
  */
 
 #include <iostream>
@@ -51,15 +56,14 @@ bool save(LinkedGraph<string>* cg_object);
 
 int main()
 {
-    // add ColorGraph object here (?)
-    LinkedGraph<string>* cg_object = new ColorGraph<string>;
-     ifstream ifs; // input file stream for this program to read from // NOTE WE MAY NEED ADDITIONAL FILE OBJECTS TO SAVE GRAPH(?) bc user can define different file name
+    LinkedGraph<string>* cg_object = new ColorGraph<string>; // add ColorGraph object here (?)
+    ifstream ifs; // input file stream for this program to read from
     string start, end, root; // maybe these need to be dynamically allocated?
     bool found_root = false;
     if(openInputFile(ifs)) {
         while (ifs >> start >> end){
             if (!found_root){
-            root = start;
+                root = start; // for this project, starting root will either be California or Florida
                 found_root = true;
             }
         // read the graph in from here // NOTE THIS IS ASSUMING EACH LINE CONTAINS THE START AND END POINTS (or each state is separated by a whitespace)
@@ -87,7 +91,7 @@ int main()
         << "1. Add an edge to the graph\n"
         << "2. Remove an edge from the graph\n"
         << "3. Undo removal of edge\n"
-        << "4. Display graph on screen\n" // maybe have a bool here in case problem isn't solved yet // ALSO add DFS or BFS
+        << "4. Display graph on screen\n" // maybe have a bool here in case problem isn't solved yet
         << "5. Solve the map coloring problem (with N colors)\n" // remember to replace N in final version
         << "6. Save graph to text file\n"
         << "7. Quit the program\n";
@@ -164,9 +168,11 @@ bool add(LinkedGraph<string>* cg_object)
     cin >> end;
     if (cg_object->add(start, end, 0)){
         cout << "Edge successfully added.\n";
+        return true;
     }
     else{
         cout << "Edge wasn't successfully added.\n";
+        return false;
     }
 }
 
@@ -176,9 +182,16 @@ bool remove(LinkedGraph<string>* cg_object)
     string start, end;
     cout << "What state do you wish to start at?\n";
     cin >> start;
-    cout << "What state do you wish to connect to?\n";
+    cout << "What state do you wish to remove it from?\n";
     cin >> end;
-    cg_object->remove(start, end);
+    if (cg_object->remove(start, end)){
+        cout << "Edge successfully removed.\n";
+    return true;
+    }
+    else{
+        cout << "Edge wasn't successfully removed.\n";
+        return false;
+    }
 }
 
 // A function to undo the previous removal from the graph
@@ -260,9 +273,11 @@ bool solve(LinkedGraph<string>* cg_object, string root){
 bool save(LinkedGraph<string>* cg_object){
     ofstream ofs;
     if (openOutputFile(ofs)){
-    cg_object->saveToFile(ofs); // need to write this function in LinkedGraph.
+        cg_object->saveToFile(ofs); // need to write this function in LinkedGraph.
+        return true;
     }
     else{
         cout << "File could not be successfully opened or created.\n";
+        return false;
     }
 }
