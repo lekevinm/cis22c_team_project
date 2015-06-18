@@ -174,9 +174,11 @@ void LinkedGraph<LabelType>::unvisitVertices()
     while (pvertexIterator->hasNext())
     {
         Vertex<LabelType>* loopVertex = pvertexIterator->next();
+		loopVertex->setColor(0);
         loopVertex->unvisit();
     }  // end while
 } // endunvisitVertices
+
 
 template<class LabelType>
 void LinkedGraph<LabelType>::depthFirstTraversal(LabelType startLabel,
