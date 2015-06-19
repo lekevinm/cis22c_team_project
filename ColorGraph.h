@@ -23,7 +23,7 @@ private:
     bool colorCheck(Vertex<LabelType>* currVertex, int i);
 public:
     ColorGraph(){}
-    //   ~ColorGraph(){}
+    ~ColorGraph(){}
     bool graphColoring(); // backtracking algorithm answers problem better
     bool remove(LabelType start, LabelType end);
     bool undoRemove();
