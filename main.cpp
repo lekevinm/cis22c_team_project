@@ -1,40 +1,3 @@
-/*
- TO DO
-  include more than one graph (storing each graph in a separate file), with 7 vertices in each graph
- - write out these graphs in two files beforehand , United States regions (west coast and east coast), two maps
- - include code that can write changes to these graphs
- 
-  your team project MUST:
- o include a loop to allow solving the problem more than once in
- one run
- 
- o display a menu to the user for the following options:
-  read the graph from a text file where the file name is input from the user (use the openInputFile function)
-  add an edge to the graph
-  remove an edge from the graph
-  undo the previous removal(s) (you MUST use an ArrayStack or LinkedStack from HW#1)
-  display the graph on the screen (give the choices of Depth- First traversal or Breadth-First traversal)
-  solve the problem for the graph, which would automatically display the results on the screen (NOTE: THERE MAY NOT BE A SOLUTION FOR A GIVEN GRAPH), and ask the user if the results should be saved to a text file (where the file name is input from the user)
-  write the graph to a text file using the Breadth-First traversal, where the file name is input from the user
- 
-  Map coloring: represent adjacent geographic areas using a graph and determine if you could color a map using a particular number of colors
- 
-  write function in LinkedGraph to save to file
- 
- STILL NEEDED
- =======
- LinkedGraph function that saves graph to file
- completion of ColorGraph.h (learn how traversal works, how to step through each vertex, etc)
- testing of program
- // clean up text files
- bug fixes + efficiency cleanup
- 
- EXTRA ADDITIONS
- ==========
- give a list of states to add an edge to
- input validation
- */
-
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -56,9 +19,9 @@ bool save(ColorGraph<string>* cg_object);
 
 int main()
 {
-    ColorGraph<string>* cg_object = new ColorGraph<string>; // add ColorGraph object here (?)
+    ColorGraph<string>* cg_object = new ColorGraph<string>;
     ifstream ifs; // input file stream for this program to read from
-    string start, end, root; // maybe these need to be dynamically allocated?
+    string start, end, root;
     bool found_root = false;
     if (openInputFile(ifs)) {
         while (ifs >> start >> end){
@@ -66,7 +29,6 @@ int main()
                 root = start; // for this project, starting root will either be California or Florida
                 found_root = true;
             }
-            // read the graph in from here // NOTE THIS IS ASSUMING EACH LINE CONTAINS THE START AND END POINTS (or each state is separated by a whitespace)
             cg_object->add(start, end, 0);
         }
     }
@@ -91,8 +53,8 @@ int main()
         << "1. Add an edge to the graph\n"
         << "2. Remove an edge from the graph\n"
         << "3. Undo removal of edge\n"
-        << "4. Display graph on screen\n" // maybe have a bool here in case problem isn't solved yet
-        << "5. Solve the map coloring problem (with N colors)\n" // remember to replace N in final version
+        << "4. Display graph on screen\n"
+        << "5. Solve the map coloring problem (with 4 colors)\n"
         << "6. Save graph to text file\n"
         << "7. Quit the program\n";
         cin >> choice;
@@ -208,7 +170,7 @@ bool undo(ColorGraph<string>* cg_object){
 // A function to display the graph through BFS or DFS
 void display(ColorGraph<string>* cg_object, string root){
     int display_option;
-    cout << "Would you like to do depth-first or breadth-first traversal?\n";
+    cout << "Would you like to do depth-first or breadth-first traversal? (1 for depth, 2 for breadth) \n";
     do{
         cin >> display_option;
         cin.clear();
@@ -230,15 +192,8 @@ void display(ColorGraph<string>* cg_object, string root){
 // Function that displays the state and color at each vertex.
 void displayVertex(string &vertex)
 {
-    // cout << hex << left << setw(10) << ptrIp->getDottedDecimal() << right << setw(10) << " " << ptrIp->getIpValue() << endl;
-    // cout << left << setw(10) << vertex.getLabel() << right << setw(10) << " " << vertex.getColor() << endl; // not sure if we should change int to an actual color...
-    cout << "Displaying item - " << vertex << endl; // figure out how to display both state AND color !!!
+    cout << left << "State: " << vertex << endl;
 }
-
-/*void display(string& anItem)
- {
- cout << "Displaying item - " << anItem << endl;
- }*/
 
 // A function to solve the map coloring problem for the current graph
 bool solve(ColorGraph<string>* cg_object, string root){
@@ -272,7 +227,7 @@ bool solve(ColorGraph<string>* cg_object, string root){
 bool save(ColorGraph<string>* cg_object){
     ofstream ofs;
     if (openOutputFile(ofs)){
-        cg_object->saveToFile(ofs); // need to write this function in LinkedGraph.
+        cg_object->saveToFile(ofs);
         return true;
     }
     else{

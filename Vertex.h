@@ -47,6 +47,8 @@ public:
     /** ADDED: returns the color of this vertex. */
     int getColor() {return color;} // it will be integer here, and it will turn to a color at a switch menu in main
     
+    string getColorString();
+    
     void setColor(int c) {color = c;} // set the color, to be used in ColorGraph.h
 
    /** Marks this vertex as visited. */
@@ -193,5 +195,32 @@ int Vertex<LabelType>::getNeighborPosition(const LabelType& neighborVertex) cons
    return position;
 }  // end getNeighborPosition
 
-
+template<class LabelType>
+string Vertex<LabelType>::getColorString()
+{
+    switch (color) {
+        case 1:
+            return "Blue";
+        case 2:
+            return "Red";
+        case 3:
+            return "Green";
+        case 4:
+            return "Yellow";
+        case 5:
+            return "Purple";
+        case 6:
+            return "Pink";
+        case 7:
+            return "Orange";
+        case 8:
+            return "Brown";
+        case 9:
+            return "Black";
+        case 10:
+            return "White";
+        default:
+            return "No color";
+    }
+}
 #endif
