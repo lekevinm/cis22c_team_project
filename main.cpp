@@ -15,7 +15,7 @@ bool undo(ColorGraph<string>* cg_object);
 void display(ColorGraph<string>* cg_object, string root);
 void displayVertex(string &vertex);
 bool solve(ColorGraph<string>* cg_object, string root);
-bool save(ColorGraph<string>* cg_object);
+bool save(ColorGraph<string>* cg_object, string root);
 
 int main()
 {
@@ -77,7 +77,7 @@ int main()
                 solve(cg_object, root); // solve the problem for the graph, which would automatically display the results on the screen (NOTE: THERE MAY NOT BE A SOLUTION FOR A GIVEN GRAPH), and ask the user if the results should be saved to a text file (where the file name is input from the user)
                 break;
             case SAVE_CHOICE:
-                save(cg_object); // write the graph to a text file using the Breadth-First traversal, where the file name is input from the user
+                save(cg_object, root); // write the graph to a text file using the Breadth-First traversal, where the file name is input from the user
                 break;
             case QUIT_CHOICE:
                 cout << "Quitting program.";
@@ -207,10 +207,12 @@ bool solve(ColorGraph<string>* cg_object, string root){
             cin.clear();
             cin.ignore();
             if (save_option == 1){
-                save(cg_object);
+                cg_object->clearStack(); // we clear stack in both options here because the user may want to save at a later time
+                save(cg_object, root);
                 return true;
             }
             else if (save_option == 2){
+                cg_object->clearStack();
                 return true;
             }
             else{
@@ -224,11 +226,14 @@ bool solve(ColorGraph<string>* cg_object, string root){
 }
 
 // A function to save the graph to a text file of user choice
-bool save(ColorGraph<string>* cg_object){
+bool save(ColorGraph<string>* cg_object, string root){
     ofstream ofs;
     if (openOutputFile(ofs)){
+        cout << "This is the completed graph that will be saved:\n";
+        cg_object->breadthFirstTraversal(root, displayVertex); // we populate the stack again here to be safe
         cg_object->saveToFile(ofs);
         ofs.close();
+        cout << "File successfully saved.\n";
         return true;
     }
     else{

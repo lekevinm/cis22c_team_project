@@ -16,6 +16,7 @@
 // of an adjacency list.
 #include <queue>
 #include <iomanip>
+#include "LinkedStack.h"
 
 using namespace std;
 
@@ -41,6 +42,9 @@ protected: // protected so you can derive this class for you team project soluti
                                    void visit(LabelType&));
     void breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
                                      void visit(LabelType&));
+    LinkedStack<LabelType> state_stack; // the linked stacks that keeps track of state during BFS (for saving)
+    LinkedStack<LabelType> color_stack; // linekd stack for color
+    
 public:
     LinkedGraph();
     virtual ~LinkedGraph();
@@ -64,10 +68,7 @@ public:
     //         WRITE THE GRAPH TO A TEXT FILE (SUGGEST TO PASS AN
     //        ofstream TO THIS !
     void saveToFile(ostream &os);
-    
-    
-    
-    
+    void clearStack();
 }; // end GraphInterface
 
 template<class LabelType>
@@ -208,6 +209,7 @@ depthFirstTraversalHelper(Vertex<LabelType>* startVertex,
     startVertex->visit();  // Mark as visited
     LabelType startLabel = startVertex->getLabel();
     visit(startLabel);
+    cout << left <<  "Color: " << startVertex->getColorString() << endl << endl;
     
     startVertex->resetNeighbor(); // Reset reference for adjacency list
     
@@ -230,8 +232,10 @@ breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
     vertexQueue.push(startVertex);
     startVertex->visit();         // Mark as visited
     visit(startLabel);
+    state_stack.push(startLabel);
    // cout << "           COLOR-" << startVertex->getColor() << endl;
     cout << left <<  "Color: " << startVertex->getColorString() << endl << endl;
+    color_stack.push(startVertex->getColorString());
     startVertex->resetNeighbor(); // Reset reference for adjacency list
     
     while (!vertexQueue.empty())
@@ -255,7 +259,9 @@ breadthFirstTraversalHelper(Vertex<LabelType>* startVertex,
                 vertexQueue.push(neighbor);
                 neighbor->visit();         // Mark as visited
                 visit(neighborLabel);
-                cout << left<< "Color: " << right << neighbor->getColorString() << endl << endl;
+                state_stack.push(neighborLabel);
+                cout << left << "Color: " << right << neighbor->getColorString() << endl << endl;
+                color_stack.push(neighbor->getColorString());
                 neighbor->resetNeighbor(); // Reset reference for adjacency list
             }
             //         else
@@ -284,13 +290,24 @@ findOrCreateVertex(const LabelType& vertexLabel)
     return theVertex;
 }  // end findOrCreateVertex
 
-// WRITE THE MEMBER FUNCTION HERE TO
-//         WRITE THE GRAPH TO A TEXT FILE (SUGGEST TO PASS AN
-//        ofstream TO THIS !
-
 template <class LabelType>
 void LinkedGraph<LabelType>::saveToFile(ostream &os)
 {
-    /*need to use BFS/DFS or DAC iterator here probably*/
+    while (!state_stack.isEmpty() && !color_stack.isEmpty()){ // uses the stacks that were populated during the BFS traversal
+        os << left << "State: " << setw(15) << state_stack.peek() << right << "Color: " << setw(10) << color_stack.peek() << endl;
+        state_stack.pop();
+        color_stack.pop();
+    }
+}
+
+template <class LabelType>
+void LinkedGraph<LabelType>::clearStack()
+{
+    while (!state_stack.isEmpty()){
+        state_stack.pop();
+    }
+    while (!color_stack.isEmpty()){
+        color_stack.pop();
+    }
 }
 #endif

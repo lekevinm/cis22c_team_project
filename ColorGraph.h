@@ -7,7 +7,6 @@
 #include <fstream>
 #include <vector>
 #include "LinkedGraph.h"
-#include "BinarySearchTree.h"
 #include "Vertex.h"
 #include "Edge.h"
 #include "LinkedStack.h"
@@ -17,14 +16,13 @@ class ColorGraph : public LinkedGraph<LabelType>
 {
 private:
     LinkedStack<LabelType> removal_stack; // the linked stack that keeps track of removals (for undoing)
-    vector<Edge<LabelType>> colorGraph;
     int color_count = 4; // the number of colors to try to solve the color map problem (can be changed in future versions)
-    bool isSafe(Vertex<LabelType>* currVertex, int c);
-    bool colorCheck(Vertex<LabelType>* currVertex, int i);
+    bool isSafe(Vertex<LabelType>* currVertex, int c); // helper function for backtracking
+    bool colorCheck(Vertex<LabelType>* currVertex, int i); // recursive helper function for backtracking
 public:
     ColorGraph(){}
     ~ColorGraph(){}
-    bool graphColoring(); // backtracking algorithm answers problem better
+    bool graphColoring(); // backtracking algorithm
     bool remove(LabelType start, LabelType end);
     bool undoRemove();
 };
@@ -51,13 +49,11 @@ bool ColorGraph<LabelType>::colorCheck(Vertex<LabelType>* currVertex, int i)
     {
         return true;
     }
-    
     for (int c = 1; c <= color_count; c++)
     {
         if (isSafe(currVertex, c)) // check if color c can be assigned to this vertex
         {
             currVertex->setColor(c);
-            
             if ((this->pvertexIterator)->hasNext()==true)
             {
                 colorCheck((this->pvertexIterator)->next(), (i + 1)); // recur to assign colors to the rest of the vertices
@@ -67,12 +63,9 @@ bool ColorGraph<LabelType>::colorCheck(Vertex<LabelType>* currVertex, int i)
             {
                 return true;
             }
-            
         }
-        
         currVertex->setColor(0); // If assigning color c isn't safe, then remove it
     }
-    
     return false; // If a color can't be assigned to this vertex, return false
 }
 
