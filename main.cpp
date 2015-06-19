@@ -228,6 +228,7 @@ bool save(ColorGraph<string>* cg_object){
     ofstream ofs;
     if (openOutputFile(ofs)){
         cg_object->saveToFile(ofs);
+        ofs.close();
         return true;
     }
     else{
