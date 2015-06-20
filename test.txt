@@ -1,14 +1,7 @@
-State: Washington     Color:        Red
-State: Idaho          Color:       Blue
-State: Utah           Color:        Red
-State: Oregon         Color:     Yellow
-State: Nevada         Color:      Green
-State: Arizona        Color:       Blue
-State: California     Color:        Red
-State: Washington     Color:        Red
-State: Idaho          Color:       Blue
-State: Utah           Color:        Red
-State: Oregon         Color:     Yellow
-State: Nevada         Color:      Green
-State: Arizona        Color:       Blue
-State: California     Color:        Red
+State: California     Color:   No color
+State: Arizona        Color:   No color
+State: Nevada         Color:   No color
+State: Oregon         Color:   No color
+State: Utah           Color:   No color
+State: Idaho          Color:   No color
+State: Washington     Color:   No color

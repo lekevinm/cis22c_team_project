@@ -1,3 +1,5 @@
+// FINAL VERSION: no changes from presentation version
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -87,8 +89,7 @@ int main()
                 break;
         }
     } while (choice != QUIT_CHOICE);
-    // remember to close file + delete dynamic memory before quitting program!
-    delete cg_object; // *** possibly need to delete things inside the graph before ???
+    delete cg_object; // delete dynamic memory
     ifs.close();
     return 0;
 }
@@ -207,12 +208,12 @@ bool solve(ColorGraph<string>* cg_object, string root){
             cin.clear();
             cin.ignore();
             if (save_option == 1){
-                cg_object->clearStack(); // we clear stack in both options here because the user may want to save at a later time
+                cg_object->clearQueue(); // we clear queue in both options here because the user may want to save at a later time
                 save(cg_object, root);
                 return true;
             }
             else if (save_option == 2){
-                cg_object->clearStack();
+                cg_object->clearQueue();
                 return true;
             }
             else{
@@ -230,7 +231,7 @@ bool save(ColorGraph<string>* cg_object, string root){
     ofstream ofs;
     if (openOutputFile(ofs)){
         cout << "This is the completed graph that will be saved:\n";
-        cg_object->breadthFirstTraversal(root, displayVertex); // we populate the stack again here to be safe
+        cg_object->breadthFirstTraversal(root, displayVertex); // we populate the queue again here to be safe
         cg_object->saveToFile(ofs);
         ofs.close();
         cout << "File successfully saved.\n";
