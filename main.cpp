@@ -1,4 +1,6 @@
-// FINAL VERSION: no changes from presentation version
+// FINAL VERSION:
+// changed stack in the saveToFile function in LinkedGraph to use a queue instead (to preserve the order of the contents)
+// added an option to change the amount of colors used in the problem
 
 #include <iostream>
 #include <string>
@@ -14,6 +16,7 @@ bool openOutputFile(ofstream &ofs);
 bool add(ColorGraph<string>* cg_object);
 bool remove(ColorGraph<string>* cg_object);
 bool undo(ColorGraph<string>* cg_object);
+void change(ColorGraph<string>* cg_object);
 void display(ColorGraph<string>* cg_object, string root);
 void displayVertex(string &vertex);
 bool solve(ColorGraph<string>* cg_object, string root);
@@ -47,7 +50,8 @@ int main()
     DISPLAY_CHOICE = 4,
     SOLVE_CHOICE = 5,
     SAVE_CHOICE = 6,
-    QUIT_CHOICE = 7;
+    CHANGE_CHOICE = 7,
+    QUIT_CHOICE = 8;
     
     cout << "\t\tMap Coloring Program\n";
     do{
@@ -56,9 +60,10 @@ int main()
         << "2. Remove an edge from the graph\n"
         << "3. Undo removal of edge\n"
         << "4. Display graph on screen\n"
-        << "5. Solve the map coloring problem (with 4 colors)\n"
+        << "5. Solve the map coloring problem\n"
         << "6. Save graph to text file\n"
-        << "7. Quit the program\n";
+        << "7. Change the number of colors available\n"
+        << "8. Quit the program\n";
         cin >> choice;
         cin.clear();
         cin.ignore();
@@ -80,6 +85,9 @@ int main()
                 break;
             case SAVE_CHOICE:
                 save(cg_object, root); // write the graph to a text file using the Breadth-First traversal, where the file name is input from the user
+                break;
+            case CHANGE_CHOICE:
+                change(cg_object); // change the number of colors used in the coloring problem
                 break;
             case QUIT_CHOICE:
                 cout << "Quitting program.";
@@ -168,6 +176,17 @@ bool undo(ColorGraph<string>* cg_object){
     }
 }
 
+// A function to set the amount of colors used in the coloring problem
+void change(ColorGraph<string>* cg_object){
+    int color;
+    cout << "The current color amount is " << cg_object->getColor() << endl;
+    cout << "Enter the amount of colors to be used in the problem:\n";
+    cin >> color;
+    cin.clear();
+    cin.ignore();
+    cg_object->setColor(color);
+}
+
 // A function to display the graph through BFS or DFS
 void display(ColorGraph<string>* cg_object, string root){
     int display_option;
@@ -199,7 +218,7 @@ void displayVertex(string &vertex)
 // A function to solve the map coloring problem for the current graph
 bool solve(ColorGraph<string>* cg_object, string root){
     if (cg_object->graphColoring()){
-        cout << "Problem successfully solved, now displaying graph:\n";
+        cout << "Problem attempted, now displaying graph:\n";
         display(cg_object, root);
         int save_option;
         cout << "Would you like to save the results to a file? 1 for yes, 2 for no. \n";

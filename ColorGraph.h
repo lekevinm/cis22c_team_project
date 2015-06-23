@@ -25,6 +25,8 @@ public:
     bool graphColoring(); // backtracking algorithm
     bool remove(LabelType start, LabelType end);
     bool undoRemove();
+    int getColor() {return color_count;}
+    void setColor(int color){color_count = color;}
 };
 
 // Function to determine if the color assignment c is safe
@@ -85,11 +87,12 @@ bool ColorGraph<LabelType>::graphColoring()
     }  // end while
     this->pvertexIterator = this->vertices.iterator();
     this->pstartvertex = this->pvertexIterator;
-    if (colorCheck((this->pvertexIterator)->next(), 1) == false)
+    colorCheck((this->pvertexIterator)->next(), 1);
+    /*if (colorCheck((this->pvertexIterator)->next(), 1) == false)
     {
-       // cout << "Problem cannot be solved.\n";
+        cout << "Problem cannot be solved.\n";
         return false;
-    }
+    }*/
     return true;
 }
 
